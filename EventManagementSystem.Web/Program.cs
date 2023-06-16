@@ -5,6 +5,7 @@ using ConductorSharp.Engine;
 using ConductorSharp.Engine.Extensions;
 using EventManagementSystem.Web.Entities;
 using Microsoft.EntityFrameworkCore;
+using EventManagementSystem.Commons.Services;
 
 
 var appBuilder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ appBuilder.Host
                 );
             builder.RegisterType<MyClass>();
             builder.RegisterType<EmContext>().InstancePerLifetimeScope();
+            builder.RegisterType<DateTimeService>().As<IDateTimeService>();
         }
     );
 appBuilder.Services.AddDbContext<EmContext>(
@@ -58,6 +60,7 @@ appBuilder.Services.AddDbContext<EmContext>(
 );
 
 
+appBuilder.Services.AddAutoMapper(typeof(Program).Assembly);
 appBuilder.Services.AddControllers();
 appBuilder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
