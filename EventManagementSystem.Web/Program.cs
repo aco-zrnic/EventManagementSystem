@@ -6,6 +6,8 @@ using ConductorSharp.Engine.Extensions;
 using EventManagementSystem.Web.Entities;
 using Microsoft.EntityFrameworkCore;
 using EventManagementSystem.Commons.Services;
+using EventManagementSystem.Web.Modules;
+using MediatR;
 
 
 var appBuilder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,8 @@ appBuilder.Host
     .ConfigureContainer<ContainerBuilder>(
         builder =>
         {
+            builder.RegisterModule<TaskDefinitionModules>();
+
             builder
                 .AddConductorSharp(
                     apiPath: appBuilder.Configuration.GetValue<string>("Conductor:ApiUrl"),
@@ -46,7 +50,7 @@ appBuilder.Host
                         pipelines.AddValidation();
                     }
                 );
-            builder.RegisterType<MyClass>();
+            builder.RegisterModule(new MediatorModule(typeof(Program).Assembly));
             builder.RegisterType<EmContext>().InstancePerLifetimeScope();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>();
         }

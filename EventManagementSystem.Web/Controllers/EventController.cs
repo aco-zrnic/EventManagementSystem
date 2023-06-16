@@ -4,6 +4,8 @@ using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
+using EventManagementSystem.Web.Handler;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,7 @@ namespace EventManagementSystem.Web.Controllers
     {
         private readonly EmContext _context;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IDateTimeService _dateTimeService;
         private ILogger<EventController> _logger;
 
@@ -22,13 +25,15 @@ namespace EventManagementSystem.Web.Controllers
             EmContext context,
             ILogger<EventController> logger,
             IMapper mapper,
-            IDateTimeService dateTimeService
+            IDateTimeService dateTimeService,
+            IMediator mediator
         )
         {
             _context = context;
             _logger = logger;
             _mapper = mapper;
             _dateTimeService = dateTimeService;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -51,6 +56,12 @@ namespace EventManagementSystem.Web.Controllers
                 );
 
             return Ok(_mapper.Map<EventResponse>(Event));
+        }
+        [HttpGet("test/{id}")]
+        public async Task<ActionResult> GetEventHandlerTest(int id)
+        {
+            var response = await _mediator.Send(new GetEvent { Id = id });
+            return Ok(response);
         }
 
         [HttpPost]
