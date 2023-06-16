@@ -1,8 +1,11 @@
-﻿using EventManagementSystem.Commons;
+﻿using AutoMapper;
+using EventManagementSystem.Commons;
+using EventManagementSystem.Commons.Services;
+using EventManagementSystem.Web.Dto.Request;
+using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.EntityFrameworkCore;
 
 namespace EventManagementSystem.Web.Controllers
 {
@@ -11,43 +14,87 @@ namespace EventManagementSystem.Web.Controllers
     public class EventController : ControllerBase
     {
         private readonly EmContext _context;
+        private readonly IMapper _mapper;
+        private readonly IDateTimeService _dateTimeService;
         private ILogger<EventController> _logger;
 
-        public EventController(EmContext context, ILogger<EventController> logger)
+        public EventController(
+            EmContext context,
+            ILogger<EventController> logger,
+            IMapper mapper,
+            IDateTimeService dateTimeService
+        )
         {
             _context = context;
             _logger = logger;
+            _mapper = mapper;
+            _dateTimeService = dateTimeService;
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<ActionResult<EventResponse[]>> GetAllEvents()
         {
-            return new string[] { "value1", "value2" };
+            var events = await _context.Events.ToArrayAsync();
+            return Ok(_mapper.Map<EventResponse[]>(events));
         }
 
-        // GET api/<EventController>/5
         [HttpGet("{id}")]
-        public Task<ActionResult<Event>> GetEvent(int id)
+        public async Task<ActionResult<EventResponse>> GetEvent(int id)
         {
-            var Event = _context.Events.FirstOrDefault(e => e.Id == id);
+            var Event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
+
             if (Event == null)
                 throw new ItemNotFoundException(
                     ErrorCode.ITEM_NOT_FOUND,
                     typeof(Event).ToString(),
                     id
                 );
-            return Event;
+
+            return Ok(_mapper.Map<EventResponse>(Event));
         }
 
-        // POST api/<EventController>
         [HttpPost]
-        public void Post([FromBody] string value) { }
+        public async Task<ActionResult> Post([FromBody] EventRequest request)
+        {
+            if (request.Date.UtcDateTime < _dateTimeService.UtcTime)
+                throw new UserFriendlyException(
+                    ErrorCode.BAD_REQUEST,
+                    $"Can't add {typeof(Event).ToString()} because date {request.Date.UtcDateTime} is not correct"
+                );
 
-        // PUT api/<EventController>/5
+            var Event = _mapper.Map<Event>(request);
+
+            _context.Events.Add(Event);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Successfuly added {typeof(Event).ToString()}");
+
+            return StatusCode(StatusCodes.Status201Created, request);
+        }
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) { }
+        public async Task<ActionResult<EventResponse>> UpdateEvent(
+            int id,
+            [FromBody] EventRequest request
+        )
+        {
+            var Event = await _context.Events.FirstOrDefaultAsync(a => a.Id == id);
 
-        // DELETE api/<EventController>/5
+            if (Event == null)
+                throw new ItemNotFoundException(
+                    ErrorCode.ITEM_NOT_FOUND,
+                    typeof(Event).ToString(),
+                    request.Id
+                );
+            Event.Name = request.Name;
+            Event.Date = request.Date;
+            Event.Venue = request.Venue;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(request);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEvent(int id)
         {

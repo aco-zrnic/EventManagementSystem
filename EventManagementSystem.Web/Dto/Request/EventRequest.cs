@@ -1,6 +1,6 @@
-﻿namespace EventManagementSystem.Web.Dto.Response
+﻿namespace EventManagementSystem.Web.Dto.Request
 {
-    public class EventResponse
+    public class EventRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
