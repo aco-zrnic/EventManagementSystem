@@ -26,4 +26,15 @@
         public ItemNotFoundException(ErrorCode errorCode, string item, object id)
             : base(errorCode, $"Entity {item} with id {id} not found") { }
     }
+
+    public class UserFriendlyException : BaseException
+    {
+        public UserFriendlyException(ErrorCode code)
+            : base(code, "An error occurred in the program") { }
+
+        public UserFriendlyException(ErrorCode errorCode, string msg) : base(errorCode, msg) { }
+
+        public UserFriendlyException(ErrorCode code, string msg, Exception innerException)
+            : base(code, msg, innerException) { }
+    }
 }
