@@ -50,7 +50,6 @@ appBuilder.Host
                         pipelines.AddValidation();
                     }
                 );
-            builder.RegisterModule(new MediatorModule(typeof(Program).Assembly));
             builder.RegisterType<EmContext>().InstancePerLifetimeScope();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>();
         }
