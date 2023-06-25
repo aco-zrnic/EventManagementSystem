@@ -31,4 +31,8 @@
     <ProjectReference Include="..\EventManagementSystem.Commons\EventManagementSystem.Commons.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Behavior\" />
+  </ItemGroup>
+
 </Project>

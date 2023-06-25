@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Modules;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Filters;
+using EventManagementSystem.Commons.Behavior;
 
 
 var appBuilder = WebApplication.CreateBuilder(args);
@@ -52,6 +54,7 @@ appBuilder.Host
                 );
             builder.RegisterType<EmContext>().InstancePerLifetimeScope();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>();
+            builder.RegisterType<LoggingActionFilter>();
         }
     );
 appBuilder.Services.AddDbContext<EmContext>(

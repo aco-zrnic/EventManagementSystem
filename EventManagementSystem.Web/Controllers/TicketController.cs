@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EventManagementSystem.Commons;
+using EventManagementSystem.Commons.Behavior;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
@@ -14,6 +15,7 @@ namespace EventManagementSystem.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ServiceFilter(typeof(LoggingActionFilter))]
     public class TicketController : ControllerBase
     {
         private readonly EmContext _context;
