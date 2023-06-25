@@ -3,6 +3,7 @@ using System;
 using EventManagementSystem.Web.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventManagementSystem.Web.Migrations
 {
     [DbContext(typeof(EmContext))]
-    partial class EmContextModelSnapshot : ModelSnapshot
+    [Migration("20230620191256_MakeParticipantIdNullable")]
+    partial class MakeParticipantIdNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
