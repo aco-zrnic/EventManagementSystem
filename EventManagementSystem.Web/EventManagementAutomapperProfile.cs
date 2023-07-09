@@ -15,6 +15,9 @@ namespace EventManagementSystem.Web
 
             CreateMap<Ticket, TicketResponse>()
                 .ForMember(a => a.Event, opt => opt.MapFrom(a => a.Event));
+
+            CreateMap<Staff, StaffResponse>();
+            CreateMap<StaffRequest, Staff>();
         }
     }
 }
