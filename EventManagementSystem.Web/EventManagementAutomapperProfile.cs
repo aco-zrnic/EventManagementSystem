@@ -18,6 +18,11 @@ namespace EventManagementSystem.Web
 
             CreateMap<Staff, StaffResponse>();
             CreateMap<StaffRequest, Staff>();
+
+            CreateMap<Sponsor, SponsoreResponse>();
+
+            CreateMap<ParticipantRequest, Participant>();
+            CreateMap<Participant, ParticipantResponse>();
         }
     }
 }
