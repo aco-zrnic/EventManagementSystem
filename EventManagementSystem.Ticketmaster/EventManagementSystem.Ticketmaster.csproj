@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.0.1" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="ConductorSharp.Engine" Version="2.0.0" />
+    <PackageReference Include="Flurl" Version="3.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.15" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventManagementSystem.Commons\EventManagementSystem.Commons.csproj" />
+    <ProjectReference Include="..\EventManagementSystem.Ticketmaster.Client\EventManagementSystem.Ticketmaster.Client.csproj" />
+  </ItemGroup>
+
+</Project>

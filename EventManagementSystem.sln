@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagementSystem.Web",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Commons", "Commons", "{30ACE0F4-9FB3-4DC0-8057-9AA2946679D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Commons", "EventManagementSystem.Commons\EventManagementSystem.Commons.csproj", "{88E36057-1128-43D5-874D-E39E8C7E8EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventManagementSystem.Commons", "EventManagementSystem.Commons\EventManagementSystem.Commons.csproj", "{88E36057-1128-43D5-874D-E39E8C7E8EFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ticketmaster", "Ticketmaster", "{563FDF26-288C-4BDF-B6A9-575A7B0142E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Ticketmaster", "EventManagementSystem.Ticketmaster\EventManagementSystem.Ticketmaster.csproj", "{5949A087-AFD9-409D-9F00-6DFF866B6DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Ticketmaster.Client", "EventManagementSystem.Ticketmaster.Client\EventManagementSystem.Ticketmaster.Client.csproj", "{76E25FEE-474C-4E1D-985C-A657BF061FF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +29,22 @@ Global
 		{88E36057-1128-43D5-874D-E39E8C7E8EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88E36057-1128-43D5-874D-E39E8C7E8EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88E36057-1128-43D5-874D-E39E8C7E8EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5949A087-AFD9-409D-9F00-6DFF866B6DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5949A087-AFD9-409D-9F00-6DFF866B6DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5949A087-AFD9-409D-9F00-6DFF866B6DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5949A087-AFD9-409D-9F00-6DFF866B6DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{88E36057-1128-43D5-874D-E39E8C7E8EFB} = {30ACE0F4-9FB3-4DC0-8057-9AA2946679D0}
+		{5949A087-AFD9-409D-9F00-6DFF866B6DB9} = {563FDF26-288C-4BDF-B6A9-575A7B0142E3}
+		{76E25FEE-474C-4E1D-985C-A657BF061FF8} = {563FDF26-288C-4BDF-B6A9-575A7B0142E3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAE3F8AE-B393-40D9-942A-F9543FD57AF0}
