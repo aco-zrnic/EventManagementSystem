@@ -27,14 +27,9 @@ namespace EventManagementSystem.Ticketmaster.Util
             _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
         }
 
-        /*public async Task<TResponse> GetAsync<TResponse>(HttpRequest request, CancellationToken cancellationToken = default) where TResponse : class
-        {
-            var response = await _httpClient.GetAsync("");
-            return response.Content;
-        }*/
         public async Task<TResponse> GetAsync<TResponse>(Uri uri) where TResponse : class
         {
-            uri = new Url(uri).SetQueryParam("apikeys", _options.Value.ApiKey).ToUri();
+            uri = new Url(uri).SetQueryParam("apikey", _options.Value.ApiKey).ToUri();
 
             var response = await _httpClient.GetAsync(uri);
 
@@ -63,9 +58,18 @@ namespace EventManagementSystem.Ticketmaster.Util
                         errorResponse.Code.ToString()
                     );
                 case HttpStatusCode.NotFound:
-
+                    throw new TicketmasterNotFoundException(
+                        ErrorCode.ITEM_NOT_FOUND,
+                        response.RequestMessage.RequestUri.ToString()
+                    );
+                case HttpStatusCode.ServiceUnavailable:
+                    throw new TicketmasterServiceUnavilableException();
             }
-            return null;
+
+            throw new TicketmasterBadResponseException(
+                response.StatusCode.ToString(),
+                jsonResponse
+            );
         }
     }
 }
