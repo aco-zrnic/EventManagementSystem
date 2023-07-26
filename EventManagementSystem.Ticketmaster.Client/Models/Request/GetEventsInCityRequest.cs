@@ -16,7 +16,7 @@ namespace EventManagementSystem.Ticketmaster.Client.Models.Request
         [JsonProperty("city")]
         public string City { get; set; }
         public string PostalCode { get; set; }
-        public DateTimeOffset? StartDateTime { get; set; }
-        public DateTimeOffset? EndDateTime { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
     }
 }
