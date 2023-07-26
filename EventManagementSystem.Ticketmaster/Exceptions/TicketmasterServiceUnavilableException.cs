@@ -1,6 +1,10 @@
-﻿namespace EventManagementSystem.Ticketmaster.Exceptions
+﻿using EventManagementSystem.Commons;
+
+namespace EventManagementSystem.Ticketmaster.Exceptions
 {
-    public class TicketmasterServiceUnavilableException
+    public class TicketmasterServiceUnavilableException : UserFriendlyException
     {
+        public TicketmasterServiceUnavilableException()
+            : base(ErrorCode.GATEWAY_ERROR, "Service unavailable") { }
     }
 }
