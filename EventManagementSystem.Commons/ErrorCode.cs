@@ -11,5 +11,6 @@ namespace EventManagementSystem.Commons
         GENERAL = 1000,
         ITEM_NOT_FOUND = 2000,
         BAD_REQUEST = 3000,
+        GATEWAY_ERROR = 8000
     }
 }
