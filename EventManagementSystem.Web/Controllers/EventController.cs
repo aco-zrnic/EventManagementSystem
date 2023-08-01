@@ -60,9 +60,9 @@ namespace EventManagementSystem.Web.Controllers
             return Ok(_mapper.Map<EventResponse>(Event));
         }
         [HttpGet("test/{id}")]
-        public async Task<ActionResult> GetEventHandlerTest(int id)
+        public async Task<ActionResult> GetEventHandlerTest(string eventName, string venue)
         {
-            var response = await _mediator.Send(new GetEvent { Id = id });
+            var response = await _mediator.Send(new GetEvent { Name = eventName, Venue = venue });
             return Ok(response);
         }
 
