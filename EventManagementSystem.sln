@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Ticke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Ticketmaster.Client", "EventManagementSystem.Ticketmaster.Client\EventManagementSystem.Ticketmaster.Client.csproj", "{76E25FEE-474C-4E1D-985C-A657BF061FF8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Conductor", "Conductor", "{806FC1A9-714E-4574-BB09-8AFD35C1D458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventManagementSystem.Conductor", "EventManagementSystem.Conductor\EventManagementSystem.Conductor.csproj", "{5D3409B3-10D5-41B6-B4C1-EDE47112FB00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,10 @@ Global
 		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76E25FEE-474C-4E1D-985C-A657BF061FF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3409B3-10D5-41B6-B4C1-EDE47112FB00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3409B3-10D5-41B6-B4C1-EDE47112FB00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3409B3-10D5-41B6-B4C1-EDE47112FB00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3409B3-10D5-41B6-B4C1-EDE47112FB00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +53,7 @@ Global
 		{88E36057-1128-43D5-874D-E39E8C7E8EFB} = {30ACE0F4-9FB3-4DC0-8057-9AA2946679D0}
 		{5949A087-AFD9-409D-9F00-6DFF866B6DB9} = {563FDF26-288C-4BDF-B6A9-575A7B0142E3}
 		{76E25FEE-474C-4E1D-985C-A657BF061FF8} = {563FDF26-288C-4BDF-B6A9-575A7B0142E3}
+		{5D3409B3-10D5-41B6-B4C1-EDE47112FB00} = {806FC1A9-714E-4574-BB09-8AFD35C1D458}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AAE3F8AE-B393-40D9-942A-F9543FD57AF0}
