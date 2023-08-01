@@ -1,4 +1,4 @@
 baseUrl: http://localhost:8080
-apiPath: proxy/api
+apiPath: api
 namespace: EventManagementSystem.Conductor.Definitions.Generated
 destination: ./EventManagementSystem.Conductor/Definitions/Generated
