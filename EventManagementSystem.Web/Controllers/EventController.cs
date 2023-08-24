@@ -7,6 +7,7 @@ using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
 using EventManagementSystem.Web.Handler;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +46,13 @@ namespace EventManagementSystem.Web.Controllers
             return Ok(_mapper.Map<EventResponse[]>(events));
         }
 
+       
+        [HttpGet("test")]
+        [Authorize("read:messages")]
+        public async Task<ActionResult> Test()
+        {
+            return Ok();
+        }
         [HttpGet("{id}")]
         public async Task<ActionResult<EventResponse>> GetEvent(int id)
         {
@@ -111,18 +119,15 @@ namespace EventManagementSystem.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEvent(int id)
         {
-            var Event = _context.Events.FirstOrDefault(e => e.Id == id);
+            /* delete run directly on the database, without loading any entities into memory. EF 7 will not track these entities in the ChangeTracker.*/
+            var successfulDelete = await _context.Events.Where(e => e.Id == id).ExecuteDeleteAsync();
 
-            if (Event == null)
+            if(successfulDelete == 0 )
                 throw new ItemNotFoundException(
                     ErrorCode.ITEM_NOT_FOUND,
                     typeof(Event).ToString(),
                     id
                 );
-
-            _context.Events.Remove(Event);
-            await _context.SaveChangesAsync();
-
             _logger.LogInformation($"Successfuly deleted {typeof(Event).ToString()} of id {id}");
 
             return Ok();
