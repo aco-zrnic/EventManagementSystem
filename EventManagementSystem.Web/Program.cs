@@ -10,7 +10,10 @@ using EventManagementSystem.Web.Modules;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
 using EventManagementSystem.Commons.Behavior;
-
+using EventManagementSystem.Web.Auth0;
+using Microsoft.OpenApi.Models;
+using EventManagementSystem.Web.Auth0.OpenApiSecurity;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +74,24 @@ appBuilder.Services.AddControllers();
 appBuilder.Services.AddRouting(options => options.LowercaseUrls = true);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 appBuilder.Services.AddEndpointsApiExplorer();
-appBuilder.Services.AddSwaggerGen();
+appBuilder.Services.AddAuthServiceCollection(appBuilder.Configuration);
+appBuilder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo() { Description = " Event Management Project" });
+    string securityDefinitionName = appBuilder.Configuration.GetValue<string>("SwaggerUISecurityMode") ?? "Bearer";
+    OpenApiSecurityScheme securityScheme = new OpenApiBearerSecurityScheme();
+    OpenApiSecurityRequirement securityRequirement = new OpenApiBearerSecurityRequirement(securityScheme);
+
+    if (securityDefinitionName.ToLower() == "oauth2")
+    {
+        securityScheme = new OpenApiOAuthSecurityScheme(appBuilder.Configuration.GetValue<string>("Auth0:Domain"), appBuilder.Configuration.GetValue<string>("Auth0:Audience"));
+        securityRequirement = new OpenApiOAuthSecurityRequirement();
+    }
+
+    c.AddSecurityDefinition(securityDefinitionName, securityScheme);
+
+    c.AddSecurityRequirement(securityRequirement);
+});
 
 
 var app = appBuilder.Build();
@@ -81,12 +101,32 @@ var app = appBuilder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Management V1");
+        c.DocExpansion(DocExpansion.None);
+
+        if (
+        appBuilder.Configuration["SwaggerUISecurityMode"]?.ToLower() == "oauth2")
+        {
+            c.OAuthClientId(appBuilder.Configuration["Auth0:ClientId"]);
+            c.OAuthClientSecret(appBuilder.Configuration["Auth0:ClientSecret"]);
+            c.OAuthAppName("Event Management");
+            c.OAuthAdditionalQueryStringParams(new Dictionary<string, string> { { "audience", appBuilder.Configuration["Auth0:Audience"] } });
+            c.OAuthUseBasicAuthenticationWithAccessCodeGrant();
+        }
+        else
+        {
+            //Configure Swagger to use JWT for authentication
+            c.OAuthClientId(appBuilder.Configuration["Auth0:ClientId"]);
+            c.OAuthAppName("Event Management");
+        }
+    });
 }
 
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllers();
 
