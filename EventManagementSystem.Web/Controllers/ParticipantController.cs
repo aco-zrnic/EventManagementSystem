@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using EventManagementSystem.Commons;
+using EventManagementSystem.Commons.Security;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +40,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<ParticipantResponse[]>> GetAll(
             [FromQuery] ParticipantRequest request
         )
@@ -58,6 +61,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<ParticipantResponse>> Get(int id)
         {
             var participant = await _context.Participants.FirstOrDefaultAsync(e => e.Id == id);
@@ -68,6 +72,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionResource.Create)]
         public async Task<ActionResult> CreateParticipant([FromBody] ParticipantRequest request)
         {
             var Event = _mapper.Map<Participant>(request);
@@ -81,6 +86,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionResource.Update)]
         public async Task<ActionResult> Put(int id, [FromBody] ParticipantRequest request)
         {
             var participant = await _context.Participants.FirstOrDefaultAsync(a => a.Id == id);
@@ -96,6 +102,7 @@ namespace EventManagementSystem.Web.Controllers
 
         // DELETE api/<ParticipantController>/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionResource.Delete)]
         public void Delete(int id) { }
     }
 }

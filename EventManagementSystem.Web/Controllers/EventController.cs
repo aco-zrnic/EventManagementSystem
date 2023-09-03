@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EventManagementSystem.Commons;
 using EventManagementSystem.Commons.Behavior;
+using EventManagementSystem.Commons.Security;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
@@ -40,6 +41,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<EventResponse[]>> GetAllEvents()
         {
             var events = await _context.Events.ToArrayAsync();
@@ -47,13 +49,8 @@ namespace EventManagementSystem.Web.Controllers
         }
 
        
-        [HttpGet("test")]
-        [Authorize("read:messages")]
-        public async Task<ActionResult> Test()
-        {
-            return Ok();
-        }
         [HttpGet("{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<EventResponse>> GetEvent(int id)
         {
             var Event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
@@ -68,6 +65,7 @@ namespace EventManagementSystem.Web.Controllers
             return Ok(_mapper.Map<EventResponse>(Event));
         }
         [HttpGet("test/{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult> GetEventHandlerTest(string eventName, string venue)
         {
             var response = await _mediator.Send(new GetEvent { Name = eventName, Venue = venue });
@@ -75,6 +73,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionResource.Create)]
         public async Task<ActionResult> Post([FromBody] EventRequest request)
         {
             if (request.Date.UtcDateTime < _dateTimeService.UtcTime)
@@ -94,6 +93,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionResource.Update)]
         public async Task<ActionResult<EventResponse>> UpdateEvent(
             int id,
             [FromBody] EventRequest request
@@ -117,6 +117,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionResource.Delete)]
         public async Task<ActionResult> DeleteEvent(int id)
         {
             /* delete run directly on the database, without loading any entities into memory. EF 7 will not track these entities in the ChangeTracker.*/

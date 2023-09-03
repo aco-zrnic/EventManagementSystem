@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using EventManagementSystem.Commons;
 using EventManagementSystem.Commons.Behavior;
+using EventManagementSystem.Commons.Security;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +42,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<IEnumerable<StaffResponse>>> GetAllStaffOfEvent(int id)
         {
             var response = await _context.Staff.Where(a => a.EventId == id).ToListAsync();
@@ -47,6 +50,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<StaffResponse>> Get(int id)
         {
             var response = await _context.Staff.SingleOrDefaultAsync(a => a.Id == id);
@@ -60,6 +64,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionResource.Create)]
         public async Task<ActionResult> Post([FromBody] StaffRequest request)
         {
             var staff = _mapper.Map<Staff>(request);
@@ -72,6 +77,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionResource.Delete)]
         public async Task<ActionResult> Delete(int id)
         {
             var staff = await _context.Staff.SingleOrDefaultAsync(a => a.Id == id);

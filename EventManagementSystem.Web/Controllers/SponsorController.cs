@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using EventManagementSystem.Commons;
 using EventManagementSystem.Commons.Behavior;
+using EventManagementSystem.Commons.Security;
 using EventManagementSystem.Commons.Services;
 using EventManagementSystem.Web.Dto.Request;
 using EventManagementSystem.Web.Dto.Response;
 using EventManagementSystem.Web.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +42,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet("by-event/{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<IEnumerable<SponsoreResponse>>> GetSponsorsOfEvent(int id)
         {
             var response = await _context.Sponsors.Where(a => a.EventId == id).ToListAsync();
@@ -47,6 +50,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = PermissionResource.View)]
         public async Task<ActionResult<SponsoreResponse>> Get(int id)
         {
             var response = await _context.Sponsors.SingleOrDefaultAsync(a => a.Id == id);
@@ -60,6 +64,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = PermissionResource.Create)]
         public async Task<ActionResult> Post([FromBody] SponsoreRequest request)
         {
             if (!_context.Events.Any(a => a.Id == request.EventId))
@@ -83,6 +88,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = PermissionResource.Update)]
         public async Task<ActionResult<SponsoreResponse>> UpdateSponsoreshipLevel(
             int id,
             [FromBody] SponsoreRequest request
@@ -100,6 +106,7 @@ namespace EventManagementSystem.Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = PermissionResource.Delete)]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var sponsor = await _context.Sponsors.SingleOrDefaultAsync(a => a.Id == id);
