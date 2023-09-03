@@ -14,6 +14,7 @@ using EventManagementSystem.Web.Auth0;
 using Microsoft.OpenApi.Models;
 using EventManagementSystem.Web.Auth0.OpenApiSecurity;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Swashbuckle.AspNetCore.Filters;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 
@@ -89,7 +90,7 @@ appBuilder.Services.AddSwaggerGen(c =>
     }
 
     c.AddSecurityDefinition(securityDefinitionName, securityScheme);
-
+    c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
     c.AddSecurityRequirement(securityRequirement);
 });
 
