@@ -47,7 +47,17 @@ namespace EventManagementSystem.Web.Controllers
             var events = await _context.Events.ToArrayAsync();
             return Ok(_mapper.Map<EventResponse[]>(events));
         }
+        [HttpGet]
+        [Authorize(Policy = PermissionResource.View)]
+        public async Task<ActionResult<RegistrationResponse>> GetAllRegistrationForEvent(int id)
+        {
+            var registrations = await ((from events in _context.Events.Where(a => a.Id == id)
+                                        from ticket in _context.Tickets.Where(ticket => ticket.EventId == events.Id)
+                                        from registration in _context.Registrations.Where(a => a.TicketId == id)
+                                        select registration).Include(a => a.Ticket)).ToArrayAsync();
 
+            return Ok();
+        }
        
         [HttpGet("{id}")]
         [Authorize(Policy = PermissionResource.View)]

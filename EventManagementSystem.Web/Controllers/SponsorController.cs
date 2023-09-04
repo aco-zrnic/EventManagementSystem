@@ -109,12 +109,15 @@ namespace EventManagementSystem.Web.Controllers
         [Authorize(Policy = PermissionResource.Delete)]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            var sponsor = await _context.Sponsors.SingleOrDefaultAsync(a => a.Id == id);
+            var sponsor = await _context.Sponsors.Where(a=>a.Id==id).ExecuteDeleteAsync();
+            
+            if(sponsor == 0)
+                throw new ItemNotFoundException(
+                   ErrorCode.ITEM_NOT_FOUND,
+                   typeof(Sponsor).ToString(),
+                   id
+               );
 
-            ItemNotFoundException.ThrowIfNull(sponsor, typeof(Sponsor).ToString());
-
-            _context.Sponsors.Remove(sponsor);
-            await _context.SaveChangesAsync();
 
             _logger.LogInformation("Successfuly deleted {@sponsor}", sponsor);
 

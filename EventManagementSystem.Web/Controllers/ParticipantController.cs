@@ -103,6 +103,21 @@ namespace EventManagementSystem.Web.Controllers
         // DELETE api/<ParticipantController>/5
         [HttpDelete("{id}")]
         [Authorize(Policy = PermissionResource.Delete)]
-        public void Delete(int id) { }
+        public async Task<ActionResult> Delete(int id) 
+        {
+            var successfulDelete = await _context.Participants.Where(a=>a.Id == id).ExecuteDeleteAsync();
+
+            if(successfulDelete == 0)
+                throw new ItemNotFoundException(
+                    ErrorCode.ITEM_NOT_FOUND,
+                    typeof(Participant).ToString(),
+                    id
+                );
+
+            _logger.LogInformation($"Successfuly deleted {typeof(Participant).ToString()} of id {id}");
+
+            return Ok();
+
+        }
     }
 }
