@@ -107,8 +107,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Management V1");
         c.DocExpansion(DocExpansion.None);
 
-        if (
-        appBuilder.Configuration["SwaggerUISecurityMode"]?.ToLower() == "oauth2")
+        if (appBuilder.Configuration["SwaggerUISecurityMode"]?.ToLower() == "oauth2")
         {
             c.OAuthClientId(appBuilder.Configuration["Auth0:ClientId"]);
             c.OAuthClientSecret(appBuilder.Configuration["Auth0:ClientSecret"]);

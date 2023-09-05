@@ -42,14 +42,14 @@ namespace EventManagementSystem.Commons
                     $"Entity {item} was not found"
                 );
         }
-        /* public static void ThrowIfNull<T>(T argument) where T : class
+         public static void ThrowIfNull<T>(T argument) where T : class
         {
             if (argument == null)
                 throw new ItemNotFoundException(
                     ErrorCode.ITEM_NOT_FOUND,
-                    $"Entity {item} was not found"
+                    $"Entity {typeof(T).ToString()} was not found"
                 );
-        }*/
+        }
     }
 
     public class UserFriendlyException : BaseException
