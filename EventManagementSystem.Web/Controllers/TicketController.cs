@@ -92,6 +92,23 @@ namespace EventManagementSystem.Web.Controllers
             return StatusCode(StatusCodes.Status201Created, request);
         }
 
+        [HttpPost("register")]
+        [Authorize(Policy = PermissionResource.Create)]
+        public async Task<ActionResult> RegisterTicket([FromBody] TicketRequest request)
+        {
+            var ticket = await _context.Tickets.FirstOrDefaultAsync(a=> a.Id == request.Id);
+            
+            ItemNotFoundException.ThrowIfNull<Ticket>(ticket);
+
+            var registration = new Registration { RegistrationDate = DateTime.UtcNow, TicketId = request.Id};
+            await _context.Registrations.AddAsync(registration);
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status201Created, request);
+        }
+
+
+
         [HttpDelete("{id}")]
         [Authorize(Policy = PermissionResource.Delete)]
         public async Task<ActionResult> Delete(int id)

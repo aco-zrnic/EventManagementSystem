@@ -47,16 +47,16 @@ namespace EventManagementSystem.Web.Controllers
             var events = await _context.Events.ToArrayAsync();
             return Ok(_mapper.Map<EventResponse[]>(events));
         }
-        [HttpGet]
+        [HttpGet("all-registrations/{id}")]
         [Authorize(Policy = PermissionResource.View)]
-        public async Task<ActionResult<RegistrationResponse>> GetAllRegistrationForEvent(int id)
+        public async Task<ActionResult<RegistrationResponse[]>> GetAllRegistrationForEvent(int id)
         {
             var registrations = await ((from events in _context.Events.Where(a => a.Id == id)
                                         from ticket in _context.Tickets.Where(ticket => ticket.EventId == events.Id)
-                                        from registration in _context.Registrations.Where(a => a.TicketId == id)
+                                        from registration in _context.Registrations.Where(a => a.TicketId == ticket.Id)
                                         select registration).Include(a => a.Ticket)).ToArrayAsync();
 
-            return Ok();
+            return Ok(_mapper.Map<RegistrationResponse[]>(registrations));
         }
        
         [HttpGet("{id}")]
@@ -65,7 +65,7 @@ namespace EventManagementSystem.Web.Controllers
         {
             var Event = await _context.Events.FirstOrDefaultAsync(e => e.Id == id);
 
-            if (Event == null)
+            if (Event is null)
                 throw new ItemNotFoundException(
                     ErrorCode.ITEM_NOT_FOUND,
                     typeof(Event).ToString(),
