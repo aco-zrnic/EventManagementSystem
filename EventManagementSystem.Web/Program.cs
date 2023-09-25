@@ -15,18 +15,27 @@ using Microsoft.OpenApi.Models;
 using EventManagementSystem.Web.Auth0.OpenApiSecurity;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Swashbuckle.AspNetCore.Filters;
+using Serilog;
 
 var appBuilder = WebApplication.CreateBuilder(args);
 
+appBuilder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom
+    .Configuration(context.Configuration)
+    .WriteTo.Console()
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithEnvironmentName();
+});
 
-// Add services to the container.
 appBuilder.Host
     .UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(
         builder =>
         {
             builder.RegisterModule<TaskDefinitionModules>();
-
+            builder.RegisterModule<PipelineBehaviorModule>();
             builder
                 .AddConductorSharp(
                     apiPath: appBuilder.Configuration.GetValue<string>("Conductor:ApiUrl"),
@@ -61,6 +70,7 @@ appBuilder.Host
             builder.RegisterType<LoggingActionFilter>();
         }
     );
+
 appBuilder.Services.AddDbContext<EmContext>(
     contextLifetime: ServiceLifetime.Transient,
     optionsAction: options =>
@@ -127,7 +137,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseSerilogRequestLogging();
 app.MapControllers();
 
 
